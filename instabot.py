@@ -9,6 +9,21 @@ import requests
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import asyncio
+from flask import Flask
+import threading
+
+# =========================================
+#              FLASK WEB SERVER (FOR RENDER)
+# =========================================
+
+app_web = Flask('')
+
+@app_web.route('/')
+def home():
+    return "Bot is alive and running!"
+
+def run_web():
+    app_web.run(host='0.0.0.0', port=10000)
 
 # =========================================
 #              CONFIGURATION
@@ -245,6 +260,11 @@ async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # =========================================
 
 def main():
+    # Start Flask server in background thread for Render
+    t = threading.Thread(target=run_web)
+    t.daemon = True
+    t.start()
+    
     app = Application.builder().token(TOKEN).build()
     
     # Commands
@@ -263,3 +283,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+        
