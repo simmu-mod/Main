@@ -22,6 +22,10 @@ app_web = Flask('')
 def home():
     return "Bot is alive and running!"
 
+@app_web.route('/register')
+def register():
+    return "OK", 200
+
 def run_web():
     app_web.run(host='0.0.0.0', port=10000)
 
@@ -283,4 +287,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-        
+    
